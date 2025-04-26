@@ -1,7 +1,5 @@
-from letters import uyir, aytham, uyir_kuril, uyil_nethil, mei, vallinam, mellinam, ithaiyinam, uyirmai, uyirmai_kuril, uyirmai_nethil, kutriyalugaram, uyiralapedai, otralapedai, udambadumei, one_letter_words, suttu_vina, numerals, viyankol, granda
-#
-#
-# print(mei)
+# from letters import uyir, aytham, uyir_kuril, uyil_nethil, mei, vallinam, mellinam, ithaiyinam, uyirmei, uyirmai_kuril, uyirmai_nethil, kutriyalugaram, uyiralapedai, otralapedai, udambadumei, one_letter_words, suttu_vina, numerals, viyankol, granda
+
 uyir = {u'அ':'a',u'ஆ':'A',u'இ':'i',u'ஈ':'I',u'உ':'u',u'ஊ':'U',u'எ':'e',u'ஏ':'E',u'ஐ':'Y',u'ஒ':'o',u'ஓ':'O',u'ஔ':'V'}
 aytham = {'ஃ':'X'}
 uyir_kuril = [u'அ',u'இ',u'உ',u'எ',u'ஒ']
@@ -12,7 +10,7 @@ vallinam =  [u'க்',u'ச்',u'ட்',u'த்',u'ப்',u'ற்']
 mellinam = [u'ங்',u'ஞ்',u'ண்',u'ந்',u'ம்',u'ன்']
 ithaiyinam = [u'ய்',u'ர்',u'ல்',u'வ்',u'ழ்',u'ள்']
 
-uyirmai = {u'க':'ka',u'கா':'kA',u'கி':'ki',u'கீ':'kI',u'கு':'ku',u'கூ':'kU',u'கெ':'ke',u'கே':'kE',u'கை':'kY',u'கொ':'ko',u'கோ':'kO',u'கௌ':'kV',
+uyirmei = {u'க':'ka',u'கா':'kA',u'கி':'ki',u'கீ':'kI',u'கு':'ku',u'கூ':'kU',u'கெ':'ke',u'கே':'kE',u'கை':'kY',u'கொ':'ko',u'கோ':'kO',u'கௌ':'kV',
            u'ங':'Ma',u'ஙா':'MA',u'ஙி':'Mi',u'ஙீ':'MI',u'ஙு':'Mu',u'ஙூ':'MU',u'ஙெ':'Me',u'ஙே':'ME',u'ஙை':'MY',u'ஙொ':'Mo',u'ஙோ':'MO',u'ஙௌ':'MV',
            u'ச':'ca',u'சா':'cA',u'சி':'ci',u'சீ':'cI',u'சு':'cu',u'சூ':'cU',u'செ':'ce',u'சே':'cE',u'சை':'cY',u'சொ':'co',u'சோ':'cO',u'சௌ':'cV',
            u'ஞ':'ba',u'ஞா':'bA',u'ஞி':'bi',u'ஞீ':'bI',u'ஞு':'bu',u'ஞூ':'bU',u'ஞெ':'be',u'ஞே':'bE',u'ஞை':'bY',u'ஞொ':'bo',u'ஞோ':'bO',u'ஞௌ':'bV',
