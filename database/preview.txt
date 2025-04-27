@@ -1,0 +1,83 @@
+==> Fabricius Dictionary.csv <==
+அ,"<i>demonstrative prefix</i> (சுட்டெழுத்து), that, அந்த. In combination any following  consonant except (ய) is doubled  as அக்கரை, ய takes வ் as அவ்யானை and before a vowel வ்வ் is inserted as அவ்வூர்.",1, [ a ]
+அ,"நாராயணன், விஷ்ணு, Vishnu.",1, [ a ]
+அ,"<i>privative prefix,</i> as அசத்தியம், அசக் தன், அசுத்தம், அயோக்கியம் &c. Before  a vowel ந் or ன் is inserted as அநாதி. Compounds with அ priv. see in their places.",1, [ a ]
+அஃகடி,see அக்கடி.,1, [ aḥkaṭi ]
+அஃகம்,"<i>s.</i> grain, தானியம். அஃகம் சுருக்கேல், make not grain dear. ""அஃகமும் காசும் சிக்கெனத் தேடு"" ஔவை.",1, [ aḥkam ]
+அஃகு,"III. <i>v. i.</i> shrink, diminish, குறை.",1, [ aḥku ]
+அஃகேனம்,the letter ஃ.,1, [ aḥkēṉam ]
+அஃது,"அது, <i>demonst. pron.,</i> that thing.",1, [ aḥtu ]
+அஃறிணை,<i>s.</i> neuter gender in Tamil.,1, [ aḥṟiṇai ]
+அகங்கரி,"(com. ஆங்காரி), VI. <i>v. i.</i> (அகம் be self-conceited, proud, இறுமா; 2. act with hatred.",1, [ akangkari ]
+
+==> Kadirvelu Dictionary.csv <==
+அகங்காரவிர்த்தி,நானென்னும்வடிவுஞானம்.,2, [ akangkāravirtti ]
+அகங்காரான்ம ஞானம்,அகங்காரமேஆன்மாவெனக்கொள்ளும் அறிவு.,2, [ akangkārāṉm ஞானம் ]
+அகங்காரி,"செருக்குடையவன், கர்வி.",2, [ akangkāri ]
+அகங்காழ்,அகக்காழ்.,2, [ akangkāẕ ]
+அகங்கை,உள்ளங்கை.,2, [ akangkai ]
+அகசன்,கேது.,2, [ akacaṉ ]
+அகசியக்காரன்,விதூஷகன்.,2, [ akaciyakkāraṉ ]
+அகசியக்கூத்து,பகடிக்கூத்து.,2, [ akaciyakkūttu ]
+அகசியம்,"ஆசியம், வேடிக்கை.",2, [ akaciyam ]
+அகச்சத்தாதுவித்தசமாதி,ஆறு சமாதிகளில் ஒன்று.,2, [ akaccattātuvittacamāti ]
+
+==> lddttam.csv <==
+அ,"தமிழ் எழுத்துகளுள் முதல் உயிர் எழுத்து ; சுட்டெழுத்து ; விகுதி ( அஃறிணைப் பன்மை , வியங்கோள் , எச்சம் ) ; ஆறாம் வேற்றுமைப்பன்மை உருபு ; சாரியை ; எட்டு என்னும் எண்ணின் குறி ; எதிர்மறை இடைச்சொல் ; அழகு ; கடவுள் ( சிவன் , திருமால் , பிரமன் ) .",1,1
+அஆ,விட்டிசைச்சொல் ; வியப்புக் குறிப்பு ; இரக்கக் குறிப்பு .,2,1
+அஃகம்,தானியம் ; விலைப்பொருள் ; ஊறுநீர் ; முறைமை .,3,1
+அஃகரம்,வெள்ளெருக்கு .,4,1
+அஃகல்,காண்க : அஃகுதல் .,5,1
+அஃகாமை,குறையாமை ; சுருங்காமை .,6,1
+அஃகான்,"'அ ' என்னும் முதல் எழுத்து ( அ - கான் , கான் எழுத்துச்சாரியை ) .",7,1
+அஃகு,ஊறுநீர் .,8,1
+அஃகுதல்,குறைதல் ; சுருங்குதல் ; நுணுகுதல் ; குவிதல் ; நெருங்குதல் ; வற்றுதல் ; கழிதல் .,9,1
+அஃகுல்லி,உக்காரி என்னும் சிற்றுண்டி ; பிட்டு .,10,1
+
+==> McAlpin Dictionary.csv <==
+அ,டீ  (a)Tii (அ)டீ similar form for female,1, [ a ]
+அகராதி,DikSanari டிக்ஷனரி dictionary,1, [ akarāti ]
+அக்கா,akkaa அக்கா elder sister,1, [ akkā ]
+அங்கே,[அங்கு]  anke அங்கெ there,1, [ angkē ]
+அசை,"2./6. ace-/= அசெ move, move about, stir; move, shake (head);   agitate, shake, disturb (attached movement, usually one end attached and   one free)",1, [ acai ]
+அஞ்சு,"3. bayappaTu (4) பயப்படு fear, be afraid",1, [ añcu ]
+அடக்கு,"3. aTakku- அடக்கு put down, restrain, control, subordinate;   contain",1, [ aṭakku ]
+அடங்கு,"3. aTanku- அடங்கு submit, obey; be subdued; be  contained; calm down (intr.)",1, [ aṭangku ]
+அடாடா,அடடா  aTeeTee அடேடே <u>interjection expressing mild surprise</u>:  oh! [cf. (அ)டா],1, [ aṭāṭā ]
+அடி,"6. (a)Tii= அடி strike, beat; blow (of wind), fall (of rain),  beat down (of sun); print (a book, etc.)",1, [ aṭi ]
+
+==> Tamil Terminology by TVA.csv <==
+,,
+abattoir,"இறைச்சிக்கூடம், கொல்களம்",Vetenary  Science
+abaxial,அச்சிலிருந்து விலகிய,Vetenary  Science
+abdomen,"வயிறு, அடிவயிறு",Vetenary  Science
+abdominal catastrophe,வயிற்றுப் பேரழிவு,Vetenary  Science
+abdominal cavity,"வயிற்றறை, வயிற்றுக்குழி",Vetenary  Science
+abdominal fat,அடிவயிற்றுக் கொழுப்பு,Vetenary  Science
+abdominal wall,வயிற்றுச்சுவர்,Vetenary  Science
+abduct,மையத்தைவிட்டுப் பிரித்தெடு,Vetenary  Science
+abduction,வெளித்தள்ளல்,Vetenary  Science
+
+==> Wiktionary words.csv <==
+page_title,
+''தை''_உயிரணுக்கள்,
+(ஆ-ர்),
+(ஆ-ர்.),
+(எ),
+(எ-ர்),
+(எ-ர்.),
+(ஓ),
+(கி),
+(தெ),
+
+==> Winslow.csv <==
+*வாராணசி,", [*vārāṇaci]    ''s. (St.)'' Benares. see வா  ரணாசி.",385,வா  ரணாசி ,", [*vārāṇaci]    ''s. (St.)'' Benares. see ."
+அ,", [a]    The first letter of the Tamil alpha bet, முதலெழுத்து. 2. A demonstrative prefix,  சுட்டெழுத்து, as, அக்கொற்றன் for அந்தக்கொற்றன்.  3. Termination of the neuter plural of verbs,  அஃறிணைப்பன்மைவிகுதி, as, வந்தன. 4. A sign of  the 6th case followed by plural nouns, as,  தனகைகள். 5. An interposed vowel, சாரியை,  as in எனக்கு. 6. Sign of the number 8. எட்  டென்னும் எண்ணின்குறி. 7. A vowel affix to  every consonant not a mute, மெய்யெழுத்துக்  களையியக்கும் சாரியை. 8. A privative prefix  from the Sanscrit, as, ஞானம், அஞ்ஞானம்.",1,முதலெழுத்து சுட்டெழுத்து அக்கொற்றன் அந்தக்கொற்றன் அஃறிணைப்பன்மைவிகுதி வந்தன தனகைகள் சாரியை எனக்கு எட்  டென்னும் எண்ணின்குறி மெய்யெழுத்துக்  களையியக்கும் சாரியை ஞானம் அஞ்ஞானம் ,", [a]    The first letter of the Tamil alpha bet, . 2. A demonstrative prefix,  , as,  for .  3. Termination of the neuter plural of verbs,  , as, . 4. A sign of  the 6th case followed by plural nouns, as,  . 5. An interposed vowel, ,  as in . 6. Sign of the number 8. . 7. A vowel affix to  every consonant not a mute, . 8. A privative prefix  from the Sanscrit, as, , ."
+அ ஆ,", [a ā]    An interjection expressive of  surprise or pity, அதிசயவிரக்கக்குறிப்பு. 2. Hia tus, a dissonance in metre, விட்டிசை. ''(p.)''",1,அதிசயவிரக்கக்குறிப்பு விட்டிசை ,", [a ā]    An interjection expressive of  surprise or pity, . 2. Hia tus, a dissonance in metre, . ''(p.)''"
+அஃகம்,", [aḥkm]    ''s.'' Grain, தானியம், as, அஃகஞ்  சுருக்கேல், Make not grain scarce (dear,) ''(p.)''",1,தானியம் அஃகஞ்  சுருக்கேல் ,", [aḥkm]    ''s.'' Grain, , as, , Make not grain scarce (dear,) ''(p.)''"
+அஃகரம்,", [aḥkrm]    ''s.'' The வெள்ளெருக்கு,  shrub. (Medical Dictionary.)",1,வெள்ளெருக்கு ,", [aḥkrm]    ''s.'' The ,  shrub. (Medical Dictionary.)"
+அஃகான்,", [aḥkāṉ]    ''s.'' The letter அ, முத  லெழுத்து. ''(p.)''",1,அ முத  லெழுத்து ,", [aḥkāṉ]    ''s.'' The letter , . ''(p.)''"
+அஃகியதனிநிலை,", ''s.'' The letter ஃ  shortened.",1,ஃ ,", ''s.'' The letter   shortened."
+அஃகியவறிவு,", ''s.'' Penetration, acu men, discrimination.",1,,", ''s.'' Penetration, acu men, discrimination."
+அஃகு,", [aḥku]    ''pres.'' கிறேன், ''past'' அஃகி  னேன், ''fut.'' வேன், ''inf.'' அஃக, ''v. n.'' To dimin ish, shrink; be shortened as a vowel; be  reduced, as wealth, &amp;c. குறைய. 2. To be come closed or compressed, as a flower,  umbrella, &amp;c. சுருங்க. 3. To be acute, re fined, as knowledge, நுண்மையாக. ''(p.)''  ",1,கிறேன் அஃகி  னேன் வேன் அஃக குறைய சுருங்க நுண்மையாக ,", [aḥku]    ''pres.'' , ''past'' , ''fut.'' , ''inf.'' , ''v. n.'' To dimin ish, shrink; be shortened as a vowel; be  reduced, as wealth, &amp;c. . 2. To be come closed or compressed, as a flower,  umbrella, &amp;c. . 3. To be acute, re fined, as knowledge, . ''(p.)''  "
+அஃகுல்லி,", [aḥkulli]    ''s.'' A kind of cake,  பிட்டு. 2. Any light food, சிற்றுண்டி. ''(p.)''",1,பிட்டு சிற்றுண்டி ,", [aḥkulli]    ''s.'' A kind of cake,  . 2. Any light food, . ''(p.)''"

@@ -19,6 +19,10 @@ STRUCTURE = "=32sIQ"
 HEADER = "I"
 STRUCTURE_SIZE = struct.calcsize(STRUCTURE)
 HEADER_SIZE = struct.calcsize(HEADER)
+
+HASHTABLEFILE = "./hashtable.bin"
+DATAFILE = "./data.jsonl"
+POSTINGSFILE = "./postings.jsonl"
 # --- Consistent Hashing Function (Returns bytes) ---
 def get_hash(input_string):
      if not isinstance(input_string, str):

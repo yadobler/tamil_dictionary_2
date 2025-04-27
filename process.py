@@ -1,35 +1,17 @@
 import json 
-import re 
 import os
 import csv
-import string
+import struct
+from letters import parse
 from collections import defaultdict
-from letters import parse, tamil_stopwords
+from utils import remove_punctuation, simple_tokenizer, get_hash, cleanhtml, STRUCTURE, HEADER, HASHTABLEFILE, POSTINGSFILE, DATAFILE
 
-CLEANR = re.compile('<.*?>') 
-ALLOWED_CHARS = set(string.ascii_letters + string.digits + ' ')
-TAMIL_START = 0x0B80
-TAMIL_END = 0x0BFF
-for code_point in range(TAMIL_START, TAMIL_END + 1):
-  ALLOWED_CHARS.add(chr(code_point))
-
-STOPWORDS = set(['a', 'an', 'the', 'is', 'in', 'and', 'of', 'to', 'for', 'with', 'by'])
-STOPWORDS.update(tamil_stopwords)
-STOPWORDS.update(['', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
-
-def cleanhtml(raw_html):
-    """Removes HTML tags from text."""
-    cleantext = re.sub(CLEANR, '', raw_html)
-    return cleantext
-
-def remove_punctuation(text):
-    cleaned_text_list = [char for char in text.strip() if char in ALLOWED_CHARS]
-    cleaned_text = "".join(cleaned_text_list)
-    return cleaned_text
+entries_no = 0
 
 def process_json_source(filename):
     data_list = []
     data = {}
+    global entries_no
     with open(filename, 'r', encoding='utf-8') as jsonfile:
         data = json.load(jsonfile)
     for headword_key, definition_value in data.items():
@@ -37,6 +19,7 @@ def process_json_source(filename):
         definition = str(definition_value).strip()
         if not headword:
             continue
+        entries_no += 1
         parsed = parse(headword)
         headword_list = []
         transliteration = ""
@@ -54,6 +37,7 @@ def process_json_source(filename):
 
 def process_csv_source(filepath, header):
     all_dictionary_entries = []
+    global entries_no
     with open(filepath, 'r', encoding='utf-8') as csvfile:
         csv_reader = csv.reader(csvfile)
         has_optional_header = "ignore_0?" in header
@@ -67,7 +51,7 @@ def process_csv_source(filepath, header):
                 'source': os.path.basename(filepath), # Store the filename as source
                 'headword': None,
                 'definition': None,
-                'raw_row': row # Keep the original row for debugging if needed
+                # 'raw_row': row # Keep the original row for debugging if needed
             }
             if has_optional_header:
                 # This logic specifically handles the "ignore_0?" case
@@ -91,6 +75,7 @@ def process_csv_source(filepath, header):
                     else:
                          entry_data['definition'] = row_dict['definition_2']
             if entry_data['headword'] or entry_data['definition']:
+                entries_no += 1
                 parsed = parse(entry_data['headword'])
                 headword_list = []
                 transliteration = ""
@@ -117,8 +102,31 @@ for i in range(24):
     all_dictionary_entries += process_json_source(f"database/v{i+1:02d}.json")
 for filename, header in csv_collections.items():
     all_dictionary_entries += process_csv_source(filename, header)
+inverted_index = defaultdict(list)
 
-sorted_dictionary = sorted(all_dictionary_entries, key=lambda x: x["headword"])
-print(sorted_dictionary[:5])
+with open(DATAFILE, "w", encoding="utf-8") as f:
+    for e in all_dictionary_entries:
+        for i in range(len(e["headword"])):
+            inverted_index[e["headword"][:i]].append(f.tell())
+        tokens = simple_tokenizer(e["definition"])
+        for word in tokens:
+            inverted_index[word].append(f.tell())
+        f.write(f"{json.dumps(e, ensure_ascii=False)}\n")
 
+inverted_index_keys = sorted(inverted_index.keys(), key=lambda x: get_hash(x))
 
+hash_table = []
+with open(POSTINGSFILE, "w", encoding='utf-8') as f:
+    for word in inverted_index_keys:
+        postings = inverted_index[word]
+        term_freq = defaultdict(int)
+        for p in postings:
+            term_freq[p] += 1 
+        df = len(term_freq.keys())
+        hash_table.append((get_hash(word), df, f.tell()))
+        f.write(f"{json.dumps((word, [(k,v) for k,v in sorted(term_freq.items(), key=lambda x: x[0])]), ensure_ascii=False)}\n")
+
+with open(HASHTABLEFILE, "wb") as f:
+    f.write(struct.pack(HEADER, entries_no))
+    for e in hash_table:
+        f.write(struct.pack(STRUCTURE, *e))
