@@ -1,7 +1,7 @@
 import json
 from collections import defaultdict
 from letters import uyir, aytham, mei, uyirmei, one_letter_words, granda
-all_letters = uyir + aytham + mei + uyirmei + granda
+all_letters = uyir | aytham | mei | uyirmei | granda
 all_letters_key = sorted(all_letters.keys(), key=lambda x:len(x), reverse=True)
 
 def process_json_source(data_list, filename):
@@ -16,11 +16,14 @@ def process_json_source(data_list, filename):
 
         transliteration = ""
         i = 0
-        for letter in all_letters_key:
-            if headword[i:].startswith(letter):
-                transliteration += all_letters[letter]
-                i += len(letter)
-                break
+        while (i < len(headword)):
+            for letter in all_letters_key:
+                if headword[i:].startswith(letter):
+                    transliteration += all_letters[letter]
+                    i += len(letter) - 1
+                    break
+            i += 1
+                
         data_list[transliteration] = (headword, definition)
 
 all_dictionary_entries = {}
@@ -28,10 +31,9 @@ for i in range(24):
     process_json_source(all_dictionary_entries, f"database/v{i+1:02d}.json")
 
 words = all_dictionary_entries.keys()
-
-bigrams = defaultdict(int)
+bigram = defaultdict(int)
 for word in words:
-    for i in range(len(word) - 1):
-        bigrams[word[i:i+2]] += 1
+    for i in range(len(word) - 2):
+        bigram[word[i:i+3]] += 1
 
-print(bigrams)
+print([(k,bigram[k]) for k in sorted(bigram, key=lambda x:bigram[x], reverse=True)])
