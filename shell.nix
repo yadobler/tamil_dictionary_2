@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  python = pkgs.python313; # or pkgs.python311, pkgs.python312, etc.
+  python = pkgs.python3; # or pkgs.python311, pkgs.python312, etc.
   venvDir = ".venv";
   libcppPath = "${pkgs.stdenv.cc}/lib";
   lib-path = with pkgs; lib.makeLibraryPath [
@@ -11,7 +11,6 @@ in
 pkgs.mkShell {
   buildInputs = [
       python
-      pkgs.python313Packages.numpy
   ];
 
   shellHook = ''

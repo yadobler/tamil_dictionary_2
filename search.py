@@ -128,8 +128,8 @@ def get_results(query, n=5):
 
     # Sort by boosted score
     results = sorted(results, key=lambda r: r["score"], reverse=True)
-
     return results[:n] if n > 0 else results
 
-results = get_results("computer", 1)
-print(results)
+if __name__ == "__main__":
+    for x in get_results("wall", 1):
+        print(prettify_definition(x))
