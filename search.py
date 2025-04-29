@@ -4,7 +4,7 @@ import json
 import math
 import difflib
 from collections import defaultdict
-from letters import parse
+from letters import parse, get_readable_transliteration
 from utils import remove_punctuation, simple_tokenizer, get_hash, HEADER_SIZE, HEADER, STRUCTURE_SIZE, STRUCTURE, HASHTABLEFILE, POSTINGSFILE, DATAFILE
 
 N = struct.unpack(HEADER, open(HASHTABLEFILE, "rb").read(HEADER_SIZE))[0]
@@ -124,6 +124,7 @@ def get_results(query, n=5):
             score += 0.1  # Very minor boost
 
         definition["score"] = score
+        definition["transliteration"] = get_readable_transliteration(headword_letters)
         results.append(definition)
 
     # Sort by boosted score
