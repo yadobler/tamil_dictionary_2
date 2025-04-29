@@ -98,7 +98,7 @@ def search(query):
         entries.append((doc_id, score))
     return sorted(entries, key=lambda x: x[1], reverse=True)
 
-def get_results(query):
+def get_results(query, n=5):
     query_letters = [letter for letter, _, _ in parse(query)]  # parsed spelling letters
     query_text = ''.join(query_letters)  # join back to text for edit distance
 
@@ -129,7 +129,7 @@ def get_results(query):
     # Sort by boosted score
     results = sorted(results, key=lambda r: r["score"], reverse=True)
 
-    return results[:5]
+    return results[:n] if n > 0 else results
 
-results = get_results("computer")
-print(json.dumps(results, ensure_ascii=False))
+results = get_results("computer", 1)
+print(results)
