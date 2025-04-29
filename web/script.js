@@ -70,7 +70,7 @@ document.addEventListener("keydown", (e) => {
 
 function updateHighlight() {
     resultElements.forEach(({ el }, i) => {
-        el.style.backgroundColor = i === currentIndex ? "#b3d4fc" : "";
+        el.classList.toggle("selected", i === currentIndex);
     });
 
     const selected = resultElements[currentIndex]?.el;

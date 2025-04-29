@@ -30,6 +30,10 @@ body.night #detail {
     background: #2a2a2a;
 }
 
+body.night .result-item.selected {
+    background-color: #444c66;
+}
+
 
 #app {
     display: flex;
@@ -79,6 +83,11 @@ body.night #detail {
     color: #666;
 }
 
+.result-item.selected {
+    background-color: #b3d4fc;
+}
+
+
 #detail {
     padding: 20px;
     width: 60%;
@@ -93,3 +102,4 @@ body.night #detail {
     font-weight: bold;
     font-size: 2em;
 }
+
