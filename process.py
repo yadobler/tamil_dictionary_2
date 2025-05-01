@@ -8,33 +8,6 @@ from utils import remove_punctuation, simple_tokenizer, get_hash, cleanhtml, STR
 
 entries_no = 0
 
-def process_json_source(filename):
-    data_list = []
-    data = {}
-    global entries_no
-    with open(filename, 'r', encoding='utf-8') as jsonfile:
-        data = json.load(jsonfile)
-    for headword_key, definition_value in data.items():
-        headword = remove_punctuation(str(headword_key).strip())
-        definition = str(definition_value).strip()
-        if not headword:
-            continue
-        entries_no += 1
-        parsed = parse(headword)
-        headword_list = []
-        transliteration = ""
-        for letter, _, translit in parsed:
-            headword_list.append(letter)
-            transliteration += translit
-        data_list.append({
-            "headword": headword,
-            "headword_letters": headword_list, 
-            "transliteration": transliteration, 
-            "definition": definition,
-            "source": "TVU"
-        })
-    return data_list
-
 def process_csv_source(filepath, header):
     all_dictionary_entries = []
     global entries_no
@@ -91,15 +64,13 @@ def process_csv_source(filepath, header):
 csv_collections = {
     "./database/Fabricius Dictionary.csv": ["headword", "ignore_0?", "definition", "ignore_1", "ignore_2"],
     "./database/Kadirvelu Dictionary.csv": ["headword", "definition", "ignore_1", "ignore_2"],
-    "./database/lddttam.csv": ["headword", "definition", "ignore_1", "ignore_2"],
+    "./database/tvu.csv": ["headword", "definition", "ignore_1", "ignore_2"],
     "./database/McAlpin Dictionary.csv": ["headword", "definition", "ignore_1", "ignore_2"],
     "./database/Tamil Terminology by TVA.csv": ["definition", "headword", "definition_2"],
     # "./database/Winslow.csv": [],
 }
 
 all_dictionary_entries = []
-for i in range(24):
-    all_dictionary_entries += process_json_source(f"database/v{i+1:02d}.json")
 for filename, header in csv_collections.items():
     all_dictionary_entries += process_csv_source(filename, header)
 inverted_index = defaultdict(list)
