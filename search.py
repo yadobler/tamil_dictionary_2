@@ -2,7 +2,6 @@ import struct
 import os
 import json
 import math
-import difflib
 from collections import defaultdict
 from letters import parse, get_readable_transliteration
 from utils import remove_punctuation, simple_tokenizer, get_hash, HEADER_SIZE, HEADER, STRUCTURE_SIZE, STRUCTURE, HASHTABLEFILE, POSTINGSFILE, DATAFILE
@@ -51,16 +50,22 @@ def find_word(word, fp):
         
 def fetch_definitions(pointer):
     with open(DATAFILE, "r", encoding="utf-8") as df:
-        df.seek(pointer)
-        return json.loads(df.readline())
+        try:
+            df.seek(pointer)
+            return json.loads(df.readline())
+        except BaseException:
+            return {}
+
+EXACT_HEADWORD_BONUS = 100.0  # Large bonus for exact match
+PREFIX_HEADWORD_BONUS = 50.0  # Medium bonus for prefix match
 
 def search(query):
-    query = remove_punctuation(query)
-    query_tokens = simple_tokenizer(query)
+    processed_query = remove_punctuation(query.strip())
+    query_tokens = simple_tokenizer(processed_query)
 
     query_tf = defaultdict(int)
-    query_df = {}
-    doc_tf_idf = defaultdict(lambda: defaultdict(float))
+    doc_term_tf = defaultdict(lambda: defaultdict(float))
+    term_df = {}
 
     with open(HASHTABLEFILE, "rb") as hf, open(POSTINGSFILE, "r", encoding="utf-8") as pf:
         for token in query_tokens:
@@ -68,68 +73,69 @@ def search(query):
             if offset < 0:
                 continue
             query_tf[token] += 1
-            query_df[token] = df
+            if token not in term_df:
+                term_df[token] = df
 
             pf.seek(offset)
-            term, posting_data = json.loads(pf.readline())
+            term_in_postings, posting_data = json.loads(pf.readline())
+            if term_in_postings != token:
+                print(f"Warning: Hash collision suspected or index error for '{token}'")
+                continue
+
             for doc_id, tf in posting_data:
-                doc_tf_idf[doc_id][term] = calculate_tfidf(tf, df)
+                doc_term_tf[doc_id][token] = tf
 
-    query_vector = {term: calculate_tfidf(tf, query_df[term]) for term, tf in query_tf.items()}
+    query_vector = {}
+    for term, tf in query_tf.items():
+        if term in term_df:
+            query_vector[term] = calculate_tfidf(tf, term_df[term])
     query_norm = math.sqrt(sum(w**2 for w in query_vector.values()))
+
+
     entries = []
+    for doc_id, term_tf_map in doc_term_tf.items():
+        doc_vector = {}
+        dot_product = 0.0
+        for term, tf in term_tf_map.items():
+            if term in term_df:
+                df = term_df[term]
+                doc_vector[term] = calculate_tfidf(tf, df)
+                if term in query_vector:
+                    dot_product += query_vector[term] * doc_vector[term]
 
-    for doc_id, vec in doc_tf_idf.items():
-        dot = 0.0
-        for q_term, q_weight in query_vector.items():
-            for d_term, d_weight in vec.items():
-                # Exact match
-                if q_term == d_term:
-                    dot += q_weight * d_weight
-                # Fuzzy match
-                elif q_term in d_term:
-                    similarity = difflib.SequenceMatcher(None, q_term, d_term).ratio()
-                    if similarity > 0.7:  # tweakable threshold
-                        boost = similarity  # e.g., similarity = 0.8 → boost by 0.8
-                        dot += q_weight * d_weight * boost
+        doc_norm = math.sqrt(sum(w**2 for w in doc_vector.values()))
+        tfidf_score = dot_product / (query_norm * doc_norm) if query_norm and doc_norm else 0.0
 
-        doc_norm = math.sqrt(sum(w**2 for w in vec.values()))
-        score = dot / (query_norm * doc_norm) if query_norm and doc_norm else 0.0
-        entries.append((doc_id, score))
+        match_bonus = 0.0
+        entry_data = fetch_definitions(doc_id)
+        headword = entry_data.get("headword", "")
+        cleaned_headword = remove_punctuation(headword.strip())
+        if cleaned_headword == processed_query:
+            match_bonus = EXACT_HEADWORD_BONUS
+        elif cleaned_headword.startswith(processed_query):
+            match_bonus = PREFIX_HEADWORD_BONUS
+        final_score = match_bonus + tfidf_score
+        entries.append((doc_id, final_score))
+
     return sorted(entries, key=lambda x: x[1], reverse=True)
 
 def get_results(query, n=5):
-    query_letters = [letter for letter, _, _ in parse(query)]  # parsed spelling letters
-    query_text = ''.join(query_letters)  # join back to text for edit distance
-
     primary_results = search(query)
-    results = []
+    num_results_to_fetch = n if n > 0 else len(primary_results)
+    top_results_pointers = primary_results[:num_results_to_fetch]
+    formatted_results = []
 
-    for ptr, score in primary_results:
-        definition = fetch_definitions(ptr)
-        headword_letters = definition.get("headword_letters", [])
-        headword_text = ''.join(headword_letters)
+    for ptr, score in top_results_pointers:
+        definition_data = fetch_definitions(ptr)
+        definition_data["score"] = score
+        headword_letters = definition_data.get("headword_letters", [])
+        definition_data["transliteration"] = get_readable_transliteration(headword_letters)
+        if isinstance(definition_data.get("definition"), str):
+             definition_data["definition"] = definition_data["definition"].split(";")
+        formatted_results.append(definition_data)
+    return formatted_results
 
-        # Boost for exact spelling match at start
-        if headword_letters[:len(query_letters)] == query_letters:
-            score += 1.0
-        elif any(q in headword_letters for q in query_letters):
-            score += 0.5
 
-        # Bonus: Boost if edit distance is small
-        distance = edit_distance(query_text, headword_text[:len(query_text)+2])  # allow slight extra characters
-        if distance == 1:
-            score += 0.3  # Small typo boost
-        elif distance == 2:
-            score += 0.1  # Very minor boost
-
-        definition["score"] = score
-        definition["transliteration"] = get_readable_transliteration(headword_letters)
-        results.append(definition)
-
-    # Sort by boosted score
-    results = sorted(results, key=lambda r: r["score"], reverse=True)
-    return results[:n] if n > 0 else results
 
 if __name__ == "__main__":
     for x in get_results("wall", 1):

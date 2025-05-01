@@ -48,7 +48,7 @@ def process_csv_source(filepath, header):
             line_num += 1
             num_columns_found = len(row)
             entry_data = {
-                'source': os.path.basename(filepath), # Store the filename as source
+                'source': os.path.basename(filepath)[:-4], # Store the filename as source
                 'headword': None,
                 'definition': None,
                 # 'raw_row': row # Keep the original row for debugging if needed
@@ -112,7 +112,6 @@ with open(DATAFILE, "w", encoding="utf-8") as f:
         for word in tokens:
             inverted_index[word].append(f.tell())
         f.write(f"{json.dumps(e, ensure_ascii=False)}\n")
-
 inverted_index_keys = sorted(inverted_index.keys(), key=lambda x: get_hash(x))
 
 hash_table = []
@@ -130,3 +129,4 @@ with open(HASHTABLEFILE, "wb") as f:
     f.write(struct.pack(HEADER, entries_no))
     for e in hash_table:
         f.write(struct.pack(STRUCTURE, *e))
+
