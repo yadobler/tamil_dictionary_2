@@ -1,4 +1,3 @@
-// Store grouped results and the corresponding DOM elements
 let resultElements = [];
 let currentIndex = -1;
 
@@ -17,6 +16,8 @@ document.getElementById("searchBox").addEventListener("input", async (e) => {
     // Render the results
     renderResults(results);
 });
+
+// --- Helper Functions ---
 
 document.getElementById("toggleTheme").addEventListener("click", () => {
     document.body.classList.toggle("night");
@@ -37,7 +38,6 @@ function renderResults(results) {
             // If this is the first time seeing this headword, create a new group
             groupedResults.set(headword, {
                 headword: headword,
-                // Assuming transliteration is mostly consistent, take the first one
                 transliteration: entry.transliteration || "",
                 entries: [], // This array will hold all original entry objects for this headword
                 sources: new Set() // Use a Set to collect unique sources (optional if displaying per entry)
@@ -71,22 +71,37 @@ function renderResults(results) {
             <div class="result-preview">${previewText}</div>
         `;
 
-        div.onclick = () => showDefinition(group);
+        // --- MODIFIED onclick handler ---
+        // Capture the index this item will have in the resultElements array
+        const itemIndex = resultElements.length;
+
+        div.onclick = () => {
+             // Update the global currentIndex to the index of the clicked item
+             currentIndex = itemIndex;
+             // Update the visual highlight
+             updateHighlight();
+             // Show the definition for the selected group
+             showDefinition(group);
+        };
+        // --- END MODIFIED onclick handler ---
+
 
         container.appendChild(div);
         resultElements.push({ el: div, group: group });
     });
 
-    // Optional: automatically select the first item if there are results
+    // Automatically select and show the first item if there are results
     if (resultElements.length > 0) {
-         currentIndex = 0;
-         updateHighlight();
-         // Optional: show the definition of the first item immediately
-         // showDefinition(resultElements[0].group);
+        currentIndex = 0;
+        updateHighlight();
+        showDefinition(resultElements[0].group);
+    } else {
+         // Clear definition area if no results found
+         document.getElementById("definitionContent").innerHTML = "";
     }
 }
 
-// --- Modified showDefinition function to display source per entry ---
+// --- showDefinition function (remains the same as the previous version) ---
 function showDefinition(group) { // This function now receives a group object
     const definitionContent = document.getElementById("definitionContent");
     let html = `
@@ -95,29 +110,21 @@ function showDefinition(group) { // This function now receives a group object
             <span class="result-translit">${group.transliteration}</span>
     `;
 
-    // Removed the display of all unique sources for the group header,
-    // as we will now display source per entry block.
-    // if (group.sources.size > 0) {
-    //     html += `<div class="result-source">Source(s): ${Array.from(group.sources).join(", ")}</div>`;
-    // }
-
     // Iterate through all original entries belonging to this headword
     group.entries.forEach(entry => {
         html += `<div class="entry-block">`; // Start block for this entry
 
-        // Add the source for THIS specific entry
-        if (entry.source) { // Ensure source exists before displaying
-             html += `<div class="result-source">Source: ${entry.source}</div>`;
-        } else {
-            // Optional: Display something if the source is missing for an entry
-            // html += `<div class="result-source missing">Source: Unknown</div>`;
-        }
+            // Add the source for THIS specific entry
+            if (entry.source) { // Ensure source exists before displaying
+                 html += `<div class="result-source">Source: ${entry.source}</div>`;
+            } else {
+                 html += `<div class="result-source missing">Source: Unknown</div>`;
+            }
 
-
-        // Display the definitions for this specific entry
-        entry.definition.forEach(def => {
-            html += `<div class="result-definition">${def}</div>`;
-        });
+            // Display the definitions for this specific entry
+            entry.definition.forEach(def => {
+                html += `<div class="result-definition">${def}</div>`;
+            });
 
         html += `</div>`; // End block for this entry
     });
@@ -127,6 +134,7 @@ function showDefinition(group) { // This function now receives a group object
     definitionContent.innerHTML = html;
 }
 
+// --- Keyboard Navigation (remains the same) ---
 document.addEventListener("keydown", (e) => {
     if (resultElements.length === 0) return; // No results to navigate
 
@@ -134,13 +142,19 @@ document.addEventListener("keydown", (e) => {
         e.preventDefault(); // Prevent default scrolling
         currentIndex = (currentIndex + 1) % resultElements.length;
         updateHighlight();
+        // Optional: Automatically show definition when navigating with keys
+        showDefinition(resultElements[currentIndex].group);
     } else if (e.key === "ArrowUp") {
         e.preventDefault(); // Prevent default scrolling
         currentIndex = (currentIndex - 1 + resultElements.length) % resultElements.length;
         updateHighlight();
+        // Optional: Automatically show definition when navigating with keys
+        showDefinition(resultElements[currentIndex].group);
     } else if (e.key === "Enter") {
         // Simulate click on the currently selected item (which represents a group)
+        // The click handler will now handle updating currentIndex, highlight, and showing definition
         if (currentIndex >= 0) {
+             // No longer need showDefinition here as click handler does it
             resultElements[currentIndex].el.click();
         }
     } else if (e.key === "Escape") {

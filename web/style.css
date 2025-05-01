@@ -1,114 +1,275 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
+/* Define CSS Variables for Colors */
+:root {
+    /* Light Theme Colors */
+    --bg-color-light: #ffffff;
+    --text-color-light: #333;
+    --border-color-light: #ccc;
+    --sidebar-border-color-light: #ccc;
+    --result-item-border-light: #eee;
+    --result-item-hover-light: #f0f0f0;
+    --result-item-selected-light: #b3d4fc;
+    --result-item-selected-hover-light: #a3c4ec;
+    --translit-color-light: #666; /* Can adjust for better contrast */
+    --source-color-light: #666; /* Can adjust for better contrast */
+    --detail-bg-light: #ffffff;
 }
 
 body.night {
-    background-color: #1e1e1e;
-    color: #ddd;
+    /* Dark Theme Colors */
+    --bg-color-dark: #1e1e1e;
+    --text-color-dark: #ddd;
+    --border-color-dark: #444;
+    --sidebar-border-color-dark: #444;
+    --result-item-border-dark: #444;
+    --result-item-hover-dark: #333;
+    --result-item-selected-dark: #444c66;
+    --result-item-selected-hover-dark: #3a4055;
+    --translit-color-dark: #aaa; /* Adjust for better contrast in dark mode */
+    --source-color-dark: #aaa; /* Adjust for better contrast in dark mode */
+    --detail-bg-dark: #2a2a2a;
 }
 
+/* General Body Styles */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* More modern font stack */
+    line-height: 1.6; /* Improve readability */
+    color: var(--text-color-light);
+    background-color: var(--bg-color-light);
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth theme transition */
+}
+
+body.night {
+    color: var(--text-color-dark);
+    background-color: var(--bg-color-dark);
+}
+
+/* App Layout */
 #app {
     display: flex;
     height: 100vh;
+    overflow: hidden; /* Prevent body scroll */
 }
 
+/* Sidebar */
 #sidebar {
-    width: 40%;
-    border-right: 1px solid #ccc;
+    width: 40%; /* Keep width */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    border-right: 1px solid var(--sidebar-border-color-light);
     display: flex;
     flex-direction: column;
+    transition: border-color 0.3s ease;
 }
 
 body.night #sidebar {
-    border-right: 1px solid #444;
+    border-right-color: var(--sidebar-border-color-dark);
 }
 
+/* Search Box */
 #searchBox {
-    padding: 10px;
+    padding: 12px 10px; /* Slightly more vertical padding */
     font-size: 16px;
     border: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--border-color-light);
+    width: 100%; /* Ensure it fills its container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: var(--bg-color-light); /* Set explicit background */
+    color: var(--text-color-light); /* Set explicit text color */
+    transition: all 0.3s ease; /* Smooth transition for theme and focus */
+    outline: none; /* Remove default outline */
 }
 
 body.night #searchBox {
-    background: #333;
-    color: #ddd;
-    border-bottom: 1px solid #444;
+    background-color: var(--bg-color-dark); /* Use dark background var */
+    color: var(--text-color-dark); /* Use dark text color var */
+    border-bottom-color: var(--border-color-dark); /* Use dark border color var */
+}
+
+#searchBox:focus {
+    border-bottom-color: #007bff; /* Highlight color on focus */
+    box-shadow: 0 1px 0 0 #007bff; /* Subtle shadow for focus */
+}
+
+body.night #searchBox:focus {
+     border-bottom-color: #55aaff; /* Highlight color on focus for dark mode */
+     box-shadow: 0 1px 0 0 #55aaff;
 }
 
 
-
+/* Results List */
 #results {
     overflow-y: auto;
-    flex: 1;
+    flex: 1; /* Takes remaining space */
 }
 
+/* Individual Result Item in List */
 .result-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    padding: 12px 10px; /* Consistent vertical padding */
+    border-bottom: 1px solid var(--result-item-border-light);
     cursor: pointer;
-}
-
-.result-item:hover {
-    background: #f0f0f0;
+    transition: background-color 0.2s ease; /* Smooth hover transition */
+    outline: none; /* Remove default focus outline */
 }
 
 body.night .result-item {
-    border-bottom: 1px solid #444;
+    border-bottom-color: var(--result-item-border-dark);
+}
+
+.result-item:hover {
+    background: var(--result-item-hover-light);
 }
 
 body.night .result-item:hover {
-    background: #333;
+    background: var(--result-item-hover-dark);
 }
 
-
-.result-headword {
-    font-weight: bold;
-}
-
-.result-translit {
-    font-style: italic;
-    color: #666;
-}
-
-.result-source {
-    font-size: 0.8em;
-    color: #666;
-}
-
+/* Selected Result Item */
 .result-item.selected {
-    background-color: #b3d4fc;
-}
-
-.result-item.selected:hover {
-    background-color: #a3c4ec;
+    background-color: var(--result-item-selected-light);
+    border-left: 4px solid #007bff;
+    padding-left: 6px; /* Adjust padding to compensate for border */
 }
 
 body.night .result-item.selected {
-    background-color: #444c66;
+    background-color: var(--result-item-selected-dark);
+     border-left-color: #55aaff; /* Dark mode selection color */
+}
+
+.result-item.selected:hover {
+     background-color: var(--result-item-selected-hover-light);
 }
 
 body.night .result-item.selected:hover {
-    background-color: #3a4055;
+     background-color: var(--result-item-selected-hover-dark);
 }
 
+/* Add a focus style for keyboard navigation */
+.result-item:focus {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Outline for focus */
+}
+
+body.night .result-item:focus {
+    box-shadow: 0 0 0 2px rgba(85, 170, 255, 0.5); /* Dark mode outline for focus */
+}
+
+
+/* Result Item Typography (in list) */
+.result-item .result-headword {
+    font-weight: bold;
+    font-size: 1.1em; /* Slightly larger headword in list */
+}
+
+.result-item .result-translit {
+    font-style: italic;
+    color: var(--translit-color-light);
+    font-size: 0.9em;
+    margin-left: 5px; /* Small space after headword */
+}
+
+body.night .result-item .result-translit {
+     color: var(--translit-color-dark);
+}
+
+.result-item .result-preview {
+    font-size: 0.9em;
+    color: var(--text-color-light); /* Use main text color for preview */
+    margin-top: 4px; /* Space above preview */
+    opacity: 0.9; /* Slight transparency */
+}
+
+body.night .result-item .result-preview {
+     color: var(--text-color-dark);
+}
+
+
+/* Detail Panel */
 #detail {
     padding: 20px;
-    width: 60%;
-    overflow-y: auto;
+    width: 60%; /* Keep width */
+    flex-shrink: 0; /* Prevent detail panel from shrinking */
+    overflow-y: auto; /* Enable scrolling for detail content */
+    background-color: var(--detail-bg-light);
+    transition: background-color 0.3s ease;
 }
 
 body.night #detail {
-    background: #2a2a2a;
+    background-color: var(--detail-bg-dark);
 }
 
+
+/* Definition Content in Detail Panel */
 #definitionContent {
-    white-space: pre-wrap;
+     /* white-space: pre-wrap; -- Keep if definitions contain literal line breaks and should preserve them */
+     white-space: normal; /* Use normal wrapping for typical HTML content */
+     word-wrap: break-word; /* Break long words */
 }
 
 #definitionContent .result-headword {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 2.2em; /* Slightly larger for prominence */
+    margin-bottom: 5px; /* Space below headword */
+    display: block; /* Ensure it takes full width */
 }
 
+#definitionContent .result-translit {
+     font-style: italic;
+     color: var(--translit-color-light);
+     font-size: 1.2em;
+     margin-left: 0; /* Remove margin if displayed on a new line */
+     display: block; /* Display on a new line below headword */
+     margin-bottom: 15px; /* Space below transliteration */
+}
+
+body.night #definitionContent .result-translit {
+    color: var(--translit-color-dark);
+}
+
+/* Style for the block wrapping each entry's definitions from a specific source */
+.entry-block {
+    margin-bottom: 20px; /* Space between definition blocks from different sources */
+    padding: 15px; /* Add some padding */
+    border: 1px solid var(--border-color-light); /* Add a subtle border */
+    border-radius: 5px; /* Rounded corners */
+}
+
+body.night .entry-block {
+    border-color: var(--border-color-dark);
+    background-color: rgba(255, 255, 255, 0.05); /* Subtle background in dark mode */
+}
+
+/* Style for the source within the detail panel */
+.entry-block .result-source {
+    font-size: 0.9em;
+    color: var(--source-color-light);
+    margin-bottom: 10px; /* Space below the source before definitions start */
+    font-weight: bold; /* Make source slightly bolder */
+    display: block; /* Ensure it's on its own line */
+}
+
+body.night .entry-block .result-source {
+     color: var(--source-color-dark);
+}
+
+
+/* Style for individual definitions */
+.result-definition {
+    margin-bottom: 10px; /* Space between individual definitions */
+    padding-left: 15px; /* Indent definitions */
+    position: relative; /* Needed for the bullet point */
+}
+
+.result-definition::before {
+    content: "•"; /* Add a bullet point */
+    position: absolute;
+    left: 0;
+    color: var(--text-color-light); /* Color of the bullet */
+}
+
+body.night .result-definition::before {
+     color: var(--text-color-dark);
+}
+
+/* Remove bottom margin from the last definition */
+.result-definition:last-child {
+    margin-bottom: 0;
+}
