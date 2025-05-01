@@ -5,7 +5,6 @@ let currentIndex = -1;
 document.getElementById("searchBox").addEventListener("input", async (e) => {
     const query = e.target.value.trim();
     if (query.length === 0) {
-        // Optionally clear results or show a default state when input is empty
         document.getElementById("results").innerHTML = "";
         document.getElementById("definitionContent").innerHTML = "";
         resultElements = [];
@@ -15,7 +14,7 @@ document.getElementById("searchBox").addEventListener("input", async (e) => {
 
     // Call the backend search function
     const results = await eel.search_query(query)();
-    // Render the results, now with grouping logic
+    // Render the results
     renderResults(results);
 });
 
@@ -23,7 +22,6 @@ document.getElementById("toggleTheme").addEventListener("click", () => {
     document.body.classList.toggle("night");
 });
 
-// --- Modified renderResults function to group entries ---
 function renderResults(results) {
     const container = document.getElementById("results");
     container.innerHTML = ""; // Clear previous results
@@ -31,7 +29,7 @@ function renderResults(results) {
     currentIndex = -1; // Reset selection index
 
     // 1. Group results by headword
-    const groupedResults = new Map(); // Use a Map to maintain insertion order if needed, or an object {} works too
+    const groupedResults = new Map();
 
     results.forEach(entry => {
         const headword = entry.headword;
@@ -42,15 +40,15 @@ function renderResults(results) {
                 // Assuming transliteration is mostly consistent, take the first one
                 transliteration: entry.transliteration || "",
                 entries: [], // This array will hold all original entry objects for this headword
-                sources: new Set() // Use a Set to collect unique sources
+                sources: new Set() // Use a Set to collect unique sources (optional if displaying per entry)
             });
         }
         // Add the current entry to the group's entries list
         const group = groupedResults.get(headword);
         group.entries.push(entry);
-         if (entry.source) { // Collect sources from individual entries
-            group.sources.add(entry.source);
-        }
+         if (entry.source) { // Collect sources from individual entries (optional)
+             group.sources.add(entry.source);
+         }
     });
 
     // 2. Render a list item for each grouped headword
@@ -73,11 +71,9 @@ function renderResults(results) {
             <div class="result-preview">${previewText}</div>
         `;
 
-        // When this group item is clicked, show the definitions for ALL entries in the group
         div.onclick = () => showDefinition(group);
 
         container.appendChild(div);
-        // Store the element and the full group object in resultElements
         resultElements.push({ el: div, group: group });
     });
 
@@ -90,7 +86,7 @@ function renderResults(results) {
     }
 }
 
-// --- Modified showDefinition function to display all definitions in a group ---
+// --- Modified showDefinition function to display source per entry ---
 function showDefinition(group) { // This function now receives a group object
     const definitionContent = document.getElementById("definitionContent");
     let html = `
@@ -99,23 +95,31 @@ function showDefinition(group) { // This function now receives a group object
             <span class="result-translit">${group.transliteration}</span>
     `;
 
-    // Display all collected unique sources
-    if (group.sources.size > 0) {
-        html += `<div class="result-source">Source(s): ${Array.from(group.sources).join(", ")}</div>`;
-    }
+    // Removed the display of all unique sources for the group header,
+    // as we will now display source per entry block.
+    // if (group.sources.size > 0) {
+    //     html += `<div class="result-source">Source(s): ${Array.from(group.sources).join(", ")}</div>`;
+    // }
 
     // Iterate through all original entries belonging to this headword
     group.entries.forEach(entry => {
-        // Optionally add a separator or indicator for each entry if needed
-        // For example, if sources differ significantly or you want to delineate
-        // html += `<div class="entry-block">`; // Start block for this entry
+        html += `<div class="entry-block">`; // Start block for this entry
+
+        // Add the source for THIS specific entry
+        if (entry.source) { // Ensure source exists before displaying
+             html += `<div class="result-source">Source: ${entry.source}</div>`;
+        } else {
+            // Optional: Display something if the source is missing for an entry
+            // html += `<div class="result-source missing">Source: Unknown</div>`;
+        }
+
 
         // Display the definitions for this specific entry
         entry.definition.forEach(def => {
             html += `<div class="result-definition">${def}</div>`;
         });
 
-        // html += `</div>`; // End block for this entry
+        html += `</div>`; // End block for this entry
     });
 
     html += `</div>`; // Close the main definition container div
@@ -123,7 +127,6 @@ function showDefinition(group) { // This function now receives a group object
     definitionContent.innerHTML = html;
 }
 
-// --- Keyboard Navigation (mostly the same, but operates on the grouped items) ---
 document.addEventListener("keydown", (e) => {
     if (resultElements.length === 0) return; // No results to navigate
 
@@ -147,7 +150,6 @@ document.addEventListener("keydown", (e) => {
         document.getElementById("definitionContent").innerHTML = ""; // Clear definition area
         document.getElementById("searchBox").focus(); // Move focus back to search box
     }
-    // Add more keys here if needed (e.g., PageUp/PageDown for faster scrolling)
 });
 
 function updateHighlight() {
